@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 // request is a structure for extracting g-recaptcha-response field from request
