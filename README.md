@@ -2,6 +2,7 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/jansvabik/fiber-recaptcha)](https://goreportcard.com/report/github.com/jansvabik/fiber-recaptcha)
 [![Coverage tests](http://gocover.io/_badge/github.com/jansvabik/fiber-recaptcha)](https://gocover.io/github.com/jansvabik/fiber-recaptcha)
+[![Build Status](https://travis-ci.org/jansvabik/fiber-recaptcha.svg?branch=master)](https://travis-ci.org/jansvabik/fiber-recaptcha)
 [![Maintainability](https://api.codeclimate.com/v1/badges/06a33ed30e237fa413ee/maintainability)](https://codeclimate.com/github/jansvabik/fiber-recaptcha/maintainability)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/jansvabik/fiber-recaptcha/blob/master/LICENSE)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/jansvabik/fiber-recaptcha/issues)
