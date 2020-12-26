@@ -16,3 +16,28 @@ You can add this package to your code by two simple steps, which are:
 
 1. get the package by `go get github.com/jansvabik/fiber-recaptcha`
 2. import the package manually by `import "github.com/jansvabik/fiber-recaptcha"` or by calling the exported `Middleware(secretKey string)` function from inside of the package
+
+## Usage
+To use the middleware within your web server, you should add the `Middleware` function to the queue of functions in your Fiber router, like in this example:
+
+```go
+// create new fiber router with one endpoint
+router := fiber.New()
+router.Post("/endpoint", recaptcha.Middleware, endpoint.YourHandler)
+```
+
+When there is a request to this endpoint, for first it will go through this reCAPTCHA middleware which sends a request to the Google API and validates the whole request to be sent by human or by robot (depending to the Google response). Then, it sets up a local variable `recaptchaSuccess` with boolean valud which you can access and use in an `if` statement.
+
+```go
+// test the recaptcha success in your endpoint handler
+if c.Locals("recaptchaSuccess") == false {
+    // code to do if the validation fails
+}
+
+// do other job if the validation succeeds
+```
+
+There are only two possible values which can appear in the local variable:
+
+* boolean `true` if the validation succeeds
+* boolean `false` if the validation fails
