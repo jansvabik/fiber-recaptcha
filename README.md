@@ -26,7 +26,7 @@ router := fiber.New()
 router.Post("/endpoint", recaptcha.Middleware, endpoint.YourHandler)
 ```
 
-When there is a request to this endpoint, for first it will go through this reCAPTCHA middleware which sends a request to the Google API and validates the whole request to be sent by human or by robot (depending to the Google response). Then, it sets up a local variable `recaptchaSuccess` with boolean valud which you can access and use in an `if` statement.
+When there is a request to this endpoint, for first it will go through this reCAPTCHA middleware which sends a request to the Google API and validates the whole request to be sent by human or by robot (depending to the Google response). Then, it sets up a local variable `recaptchaSuccess` with boolean value which you can access and use in an `if` statement.
 
 ```go
 // test the recaptcha success in your endpoint handler
