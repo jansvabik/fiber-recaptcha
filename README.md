@@ -16,12 +16,15 @@ This package should support at least these types of reCAPTCHA:
 You can add this package to your code by two simple steps, which are:
 
 1. get the package by `go get github.com/jansvabik/fiber-recaptcha`
-2. import the package manually by `import "github.com/jansvabik/fiber-recaptcha"` or by calling the exported `Middleware(secretKey string)` function from inside of the package
+2. import the package manually by importing `github.com/jansvabik/fiber-recaptcha` or by calling the exported `Middleware(c *fiber.Ctx) error` function from inside of the package
 
 ## Usage
 To use the middleware within your web server, you should add the `Middleware` function to the queue of functions in your Fiber router, like in this example:
 
 ```go
+// pass your secret key to the package
+recaptcha.SecretKey = "place-your-recaptcha-secret-key-here"
+
 // create new fiber router with one endpoint
 router := fiber.New()
 router.Post("/endpoint", recaptcha.Middleware, endpoint.YourHandler)
