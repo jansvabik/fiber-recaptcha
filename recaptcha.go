@@ -22,50 +22,52 @@ type googleResponse struct {
 	ErrorCodes []string `json:"error-codes"`
 }
 
+// SecretKey stores the secret key for your reCAPTCHA. You can get your keys
+// here: https://www.google.com/recaptcha/admin/
+var SecretKey string
+
 // Middleware is a fiber middleware for validating recaptchas
-func Middleware(secretKey string) func(c *fiber.Ctx) error {
-	return func(c *fiber.Ctx) error {
-		// g-recaptcha-response field extraction and testing
-		req := request{}
-		c.BodyParser(&req)
-		if req.GRecaptchaResponse == "" {
-			c.Locals("recaptchaSuccess", false)
-			return c.Next()
-		}
-
-		// google validation request data
-		postURL := "https://www.google.com/recaptcha/api/siteverify"
-		postStr := url.Values{
-			"secret":   {secretKey},
-			"response": {req.GRecaptchaResponse},
-			"remoteip": {c.IP()},
-		}
-
-		// validity check
-		responsePost, err := http.PostForm(postURL, postStr)
-		if err != nil {
-			fmt.Println(err.Error())
-			c.Locals("recaptchaSuccess", false)
-			return c.Next()
-		}
-		defer responsePost.Body.Close()
-		body, err := ioutil.ReadAll(responsePost.Body)
-		if err != nil {
-			fmt.Println(err.Error())
-			c.Locals("recaptchaSuccess", false)
-			return c.Next()
-		}
-
-		// unmarshal the response and test the success
-		gres := googleResponse{}
-		json.Unmarshal(body, &gres)
-		if !gres.Success {
-			c.Locals("recaptchaSuccess", false)
-			return c.Next()
-		}
-
-		// success, execute the next method in router
-		c.Locals("recaptchaSuccess", true)
+func Middleware(c *fiber.Ctx) error {
+	// g-recaptcha-response field extraction and testing
+	req := request{}
+	c.BodyParser(&req)
+	if req.GRecaptchaResponse == "" {
+		c.Locals("recaptchaSuccess", false)
 		return c.Next()
 	}
+
+	// google validation request data
+	postURL := "https://www.google.com/recaptcha/api/siteverify"
+	postStr := url.Values{
+		"secret":   {SecretKey},
+		"response": {req.GRecaptchaResponse},
+		"remoteip": {c.IP()},
+	}
+
+	// validity check
+	responsePost, err := http.PostForm(postURL, postStr)
+	if err != nil {
+		fmt.Println(err.Error())
+		c.Locals("recaptchaSuccess", false)
+		return c.Next()
+	}
+	defer responsePost.Body.Close()
+	body, err := ioutil.ReadAll(responsePost.Body)
+	if err != nil {
+		fmt.Println(err.Error())
+		c.Locals("recaptchaSuccess", false)
+		return c.Next()
+	}
+
+	// unmarshal the response and test the success
+	gres := googleResponse{}
+	json.Unmarshal(body, &gres)
+	if !gres.Success {
+		c.Locals("recaptchaSuccess", false)
+		return c.Next()
+	}
+
+	// success, execute the next method in router
+	c.Locals("recaptchaSuccess", true)
+	return c.Next()
 }
