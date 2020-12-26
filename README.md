@@ -25,8 +25,10 @@ To use the middleware within your web server, you should add the `Middleware` fu
 // pass your secret key to the package
 recaptcha.SecretKey = "place-your-recaptcha-secret-key-here"
 
-// create new fiber router with one endpoint
+// create new fiber router
 router := fiber.New()
+
+// create an endpoint with the recaptcha middleware
 router.Post("/endpoint", recaptcha.Middleware, endpoint.YourHandler)
 ```
 
