@@ -69,6 +69,11 @@ func Middleware(c *fiber.Ctx) error {
 		return c.Next()
 	}
 
+	if len(req.GRecaptchaResponse) <= 500 {
+		c.Locals("recaptchaSuccess", false)
+		return c.Next()
+	}
+
 	// get the google validation success value (true = success)
 	ok, err := validate(req.GRecaptchaResponse, c.IP())
 	if err != nil {
