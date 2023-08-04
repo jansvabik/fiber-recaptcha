@@ -64,12 +64,7 @@ func Middleware(c *fiber.Ctx) error {
 	// g-recaptcha-response field extraction and testing
 	req := request{}
 	c.BodyParser(&req)
-	if req.GRecaptchaResponse == "" {
-		c.Locals("recaptchaSuccess", false)
-		return c.Next()
-	}
-
-	if len(req.GRecaptchaResponse) <= 500 {
+	if req.GRecaptchaResponse == "" && len(req.GRecaptchaResponse) <= 500 && len(req.GRecaptchaResponse) >= 600 {
 		c.Locals("recaptchaSuccess", false)
 		return c.Next()
 	}
